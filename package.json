@@ -2,10 +2,11 @@
   "name": "portfolio-backend",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
-    "dev": "nodemon",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+"scripts": {
+  "dev": "nodemon src/server.js",  
+  "start": "node src/server.js"
+}
+,
   "keywords": [],
   "author": "",
   "license": "ISC",
