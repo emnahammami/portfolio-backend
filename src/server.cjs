@@ -31,9 +31,14 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 // Allow parsing of `multipart/form-data`
 app.use(express.urlencoded({ extended: true}));
-app.use(cors({
-  origin: 'https://portfolio-pkf1l2swd-emnahammamis-projects.vercel.app/?fbclid=IwY2xjawIQuRhleHRuA2FlbQIxMAABHcbu0bXfUyQqq6NptoZC_y27zAn4X9cDnyK5hKp-on86goM2f-aawKWlqQ_aem_zxLuqvh3RGq8sEiE0cDp2g' // Or '*' to allow all origins
-}));
+app.use(
+  cors({
+    origin: '*', // Remplace par ton domaine en prod si besoin
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
+
 
 app.use('/api/projets', projetRoutes);
  // Valeur très élevée en ms (~24 jours)
