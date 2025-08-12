@@ -31,9 +31,13 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 // Allow parsing of `multipart/form-data`
 app.use(express.urlencoded({ extended: true}));
+const allowedOrigins = [
+  'http://localhost:3000',        // Dev frontend
+  'https://portfolio-frontend-git-main-emnahammamis-projects.vercel.app/'     // Prod frontend
+];
 app.use(
   cors({
-    origin: '*', // Remplace par ton domaine en prod si besoin
+    origin:  allowedOrigins, // Remplace par ton domaine en prod si besoin
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
