@@ -46,7 +46,7 @@ app.use('/api/projets', projetRoutes);
  app.use(json());  // Middleware pour parser le JSON des requêtes
 // Connect to MongoDB
 mongoose
-  .connect(process.env.MONGO_URI )
+  .connect(process.env.MONGO_URI ||"mongodb+srv://hammamiemna22:Puetxea3hfWAdvl6@cluster0.pthra.mongodb.net/")
   .then(() => console.log('✅ Connected to MongoDB Atlas'))
   .catch((err) => console.error('❌ MongoDB Error:', err));
 
