@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import projetRoutes from './routes/projets';
+import certifsRoutes from './routes/certifs';
+
 import { v2 as cloudinary } from 'cloudinary';
 import multer from 'multer';
 import timeout from 'connect-timeout';
@@ -33,7 +35,7 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.urlencoded({ extended: true}));
 const allowedOrigins = [
   'http://localhost:3000',        // Dev frontend
-  'https://portfolio-frontend-git-main-emnahammamis-projects.vercel.app/'     // Prod frontend
+  'http://portfolio-frontend-git-main-emnahammamis-projects.vercel.app/'     // Prod frontend
 ];
 app.use(
   cors({
@@ -43,6 +45,7 @@ app.use(
   })
 );
 
+app.use('/api/certifs', certifsRoutes );
 
 app.use('/api/projets', projetRoutes);
  // Valeur très élevée en ms (~24 jours)
