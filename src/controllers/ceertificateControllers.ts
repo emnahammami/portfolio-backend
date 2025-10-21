@@ -47,9 +47,12 @@ export const createCertificate = async (req: Request, res: Response): Promise<vo
 // Lire tous les certificats
 export const getCertificates = async (req: Request, res: Response): Promise<void> => {
   try {
+    console.log('Fetching certificates...');
     const certificates: ICertificate[] = await Certificate.find();
+    console.log(`Found ${certificates.length} certificates`);
     res.status(200).json(certificates);
   } catch (error: any) {
+    console.error('Error fetching certificates:', error);
     res.status(500).json({ error: error.message });
   }
 };

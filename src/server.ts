@@ -12,9 +12,9 @@ const bodyParser = require('body-parser');
 
 // Configure Cloudinary
 cloudinary.config({
-  cloud_name: 'dcgvi2gxp',
-  api_key: '565947912736894',
-  api_secret: 'vLaAPc3hM_yCntpZ1iA0l9eEPvw',
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'dcgvi2gxp',
+  api_key: process.env.CLOUDINARY_API_KEY || '565947912736894',
+  api_secret: process.env.CLOUDINARY_API_SECRET || 'vLaAPc3hM_yCntpZ1iA0l9eEPvw',
 });
 
 dotenv.config();
@@ -35,22 +35,37 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.urlencoded({ extended: true}));
 const allowedOrigins = [
   'http://localhost:3000',        // Dev frontend
-  'http://portfolio-frontend-git-main-emnahammamis-projects.vercel.app/'     // Prod frontend
+  'http://portfolio-frontend-git-main-emnahammamis-projects.vercel.app',     // Prod frontend (removed trailing slash)
+  'https://portfolio-frontend-git-main-emnahammamis-projects.vercel.app'     // HTTPS version
 ];
 app.use(
   cors({
-    origin:  allowedOrigins, // Remplace par ton domaine en prod si besoin
+    origin: allowedOrigins,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
   })
 );
 
-app.use('/api/certifs', certifsRoutes );
-
+// Routes
+app.use('/api/certifs', certifsRoutes);
 app.use('/api/projets', projetRoutes);
- // Valeur très élevée en ms (~24 jours)
- app.use(timeout('30m'));  // Temps d'attente de 30 minutes (tu peux ajuster le temps ici)
- app.use(json());  // Middleware pour parser le JSON des requêtes
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', message: 'Server is running' });
+});
+
+// Error handling middleware
+app.use((err: any, req: any, res: any, next: any) => {
+  console.error('Error:', err);
+  res.status(500).json({ error: 'Internal server error' });
+});
+
+// 404 handler
+app.use('*', (req, res) => {
+  res.status(404).json({ error: 'Route not found' });
+});
 // Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI ||"mongodb+srv://hammamiemna22:Puetxea3hfWAdvl6@cluster0.pthra.mongodb.net/")
